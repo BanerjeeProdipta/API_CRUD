@@ -12,12 +12,8 @@ exports.handler = async(event) => {
                 id: event.pathParameters.id,
             },
         };
-        await documentClient
-            .delete(params)
-            .promise()
-            .then(() => {
-                body = `Deleted item ${event.pathParameters.id}`;
-            });
+        await documentClient.delete(params).promise();
+        body = `Deleted item ${event.pathParameters.id}`;
     } catch (err) {
         statusCode = 400;
         body = err.message;
