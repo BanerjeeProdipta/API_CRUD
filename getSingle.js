@@ -12,12 +12,11 @@ exports.handler = async (event) => {
         id: event.pathParameters.id,
       },
     };
-    await documentClient
-      .get(params)
-      .promise()
-      .then((response) => {
-        body = JSON.stringify(response.Item);
-      });
+    let res = await documentClient.get(params).promise();
+    if (res.Item === undefined) {
+      statusCode = 400;
+      body = 'No task found with id: ' + params.Key.id;
+    } else body = JSON.stringify(res.Item);
   } catch (err) {
     statusCode = 400;
     body = err.message;
